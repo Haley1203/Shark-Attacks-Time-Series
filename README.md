@@ -31,6 +31,7 @@ For data protection purposes, I have removed the column that includes the name o
 
 ‘Age’ column format was irregular by some entries having whole numbers and decimals which I formatted so they were all the same. This help to keep the data consistent throughout and ensures the data follows and in the correct format. 
 
+
 ## Data Analytics 
 
 Time series models are designed to identify and learn from temporal patterns in historical data, enabling accurate forecasting of year-on-year trends. Methods such as ARIMA and SARIMA are particularly effective for predicting shark attacks, as they account for both trend and seasonal variations in past occurrences.
