@@ -106,6 +106,23 @@ In summary, this project successfully applied ARIMA time series modelling to for
 The next step would be to share this information with hot spot areas, but using the map displayed within the appendix. I could also look to implement SARIMA to capture seasonal patterns which both analyses can help toward shark attacks prevention. The forecasts can guide lifeguard staffing, medical readiness, and surveillance efforts in regions expected to see higher shark activity. 
 
 
+## Referencing & Academic Support 
+
+OpenDataSoft. (n.d.). Global Shark Attack Dataset. Retrieved July 8, 2025, from https://public.opendatasoft.com/explore/dataset/global-shark-attack/table/?disjunctive.country&amp;disjunctive.area&amp;disjunctive.activity
+
+Microsoft. (2025). Power Query documentation. Retrieved July 8, 2025, from https://learn.microsoft.com/en-us/power-query/power-query-what-is-power-query
+
+iceDQ. (n.d.). 6 Data Quality Dimensions: Complete Guide with Examples and Measurement Methods. Retrieved July 8, 2025, from https://icedq.com/6-data-quality-dimensions#what_is_completeness_data_quality_dimension
+
+Neptune.ai. (n.d.). ARIMA and SARIMA: Real-world time series forecasting guide. [online] Available at: https://neptune.ai/blog/arima-sarima-real-world-time-series-forecasting-guide [Accessed 29 Jul. 2025].
+
+Brownlee, J. (2020). How to develop an autoregression forecast model for household electricity consumption. [online] Machine Learning Mastery. Available at: https://machinelearningmastery.com/how-to-develop-an-autoregression-forecast-model-for-household-electricity-consumption/ [Accessed 29 Jul. 2025].
+
+Bobbitt, Z., 2021. MAE vs. RMSE: Which Metric Should You Use? [online] Statology. Available at: https://www.statology.org/mae-vs-rmse/ [Accessed 5 Aug. 2025].
+
+Yurekli, K., Kurunc, A. and Ozturk, F., 2005. Testing the Residuals of an ARIMA Model on the Çekerek Stream Watershed in Turkey. Turkish Journal of Engineering and Environmental Sciences. Available at: https://www.researchgate.net/publication/286644057_Testing_the_Residuals_of_an_ARIMA_Model_on_the_C_ekerek_Stream_Watershed_in_Turkey [Accessed 5 Aug. 2025].
+
+
 
 
 
