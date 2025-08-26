@@ -31,6 +31,9 @@ For data protection purposes, I have removed the column that includes the name o
 
 ‘Age’ column format was irregular by some entries having whole numbers and decimals which I formatted so they were all the same. This help to keep the data consistent throughout and ensures the data follows and in the correct format. 
 
+Please see ELT process below: 
+![ELT](Image/ETL Pipeline.png) <img width="316" height="19" alt="image" src="https://github.com/user-attachments/assets/edfe570f-f24c-494d-9cef-f63f27366b21" />
+
 
 ## Data Analytics 
 
