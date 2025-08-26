@@ -32,7 +32,9 @@ For data protection purposes, I have removed the column that includes the name o
 ‘Age’ column format was irregular by some entries having whole numbers and decimals which I formatted so they were all the same. This help to keep the data consistent throughout and ensures the data follows and in the correct format. 
 
 Please see ELT process below: 
-![ELT](Image/ETL Pipeline.png) <img width="316" height="19" alt="image" src="https://github.com/user-attachments/assets/edfe570f-f24c-494d-9cef-f63f27366b21" />
+
+
+<img width="316" height="316" alt="image" src="https://github.com/Haley1203/Shark-Attacks-Time-Series/blob/main/ETL%20Pipeline.JPG" />
 
 
 ## Data Analytics 
@@ -41,9 +43,13 @@ Time series models are designed to identify and learn from temporal patterns in 
 
  
 Load and Prepare Dataset 
+
 *I have used machinelearningmastery.com as a guide to complete my Time Series Analysis. 
 
 The dataset was loaded into Databricks, with most of the initial transformations completed in Power Query. Additional validation steps were incorporated into the code to ensure data cleanliness, as inconsistencies could distort the accuracy of the time series model. A line chart was created using the target variable (Volume) against the independent variable (Year) to verify alignment with the visualisation presented in the dashboard.
+
+
+<img width="316" height="316" alt="image" src="https://github.com/Haley1203/Shark-Attacks-Time-Series/blob/main/Shark%20Attack%20Over%20Time%20Line%20Chart.png" />
 
 Check for Stationarity
 
@@ -62,7 +68,14 @@ Here is the new summary of the results:
 
 ARIMA has been used to fit the model to the log-transformed time series data and then making a prediction for the next five years. 
 
+<img width="316" height="316" alt="image" src="https://github.com/Haley1203/Shark-Attacks-Time-Series/blob/main/ARIMA%20Prediction%20for%20Next%205%20Years.jpg" />
+
 The code was tweaked to overlay the model's predictions with the actual values on the time series chart. This allows for a clear visual comparison, making it easier to assess the model's accuracy by observing how closely the predicted line aligns with the actual data.
+
+Updated Chart: 
+
+<img width="316" height="316" alt="image" src="https://github.com/Haley1203/Shark-Attacks-Time-Series/blob/main/ARIMA%20Prediction%20for%20Next%205%20Years%20with%20Previous%20Prediction%20Overlay.jpg" />
+
 
 MAE: A metric that tells us the mean absolute difference between the predicted values and the actual values in a dataset. The lower the MAE, the better a model fits a dataset.
  
@@ -75,10 +88,14 @@ Interpretation: RMSE of 21.89 means that my model's predictions have an average 
 *Information on MAE & RMSE provided by Zach Bobbitt on statology webiste
 
 Residuals of the ARIMA model
+
+<img width="316" height="316" alt="image" src="https://github.com/Haley1203/Shark-Attacks-Time-Series/blob/main/Residuals%20of%20the%20ARIMA%20Model.jpg" />
  
 Residuals are the difference between the observed value and the values predicted by the model. Residuals appear low and stable after the year 2000, suggesting that the model effectively captures the underlying structure of the time series during this period. However, there seems to be a potential issue around the year 2000, which may indicate a poor model fit in the earlier years. To address this, I could consider refitting the model with a different start date, as this might improve the overall pattern and performance of the model.
 
 Ljung-Box test 
+
+<img width="316" height="316" alt="image" src="https://github.com/Haley1203/Shark-Attacks-Time-Series/blob/main/Ljung%20Box%20Test.jpg" />
 
 In my ARIMA model, residual autocorrelations mostly fall within the 95% confidence bounds, indicating that the model has effectively captured the temporal structure of the data. The residuals resemble white noise, suggesting a good model fit.
 
