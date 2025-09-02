@@ -3,7 +3,16 @@ This analysis explores Shark Attack incidents which is crucial for understanding
 
 ## Introduction
 
-This analysis explores Shark Attack incidents which is crucial for understanding the dynamics and risks associated with these events. This report provides insight into public datasets on global shark attacks, sourced from the OpenDatasoft Website. The dataset offers a variety of variables, including the dates of attacks, types of attacks, locations, activities of the individuals involved, their sex, and the fatality outcomes. 
+This analysis explores Shark Attack incidents, understanding the dynamics and risks associated with these events. This report provides insight into public a dataset on global shark attacks, sourced from the OpenDatasoft Website. The dataset offers a variety of variables, including the dates of attacks, types of attacks, locations, activities of the individuals involved, their sex, and the fatality outcomes. 
+
+## Executive Summary 
+
+The primary objective of this project is to uncover patterns and trends in shark attacks over time and to forecast the expected number of incidents over the next five years. These insights aim to support regions that frequently experience shark attacks by informing preventative strategies and resource planning.
+
+The analysis employs univariate time series modelling using the ARIMA algorithm. Data was sourced from OpenDataSoft, transformed using Power Query in Excel, and analysed in Power BI and Databricks, with Python as the primary programming language. Key steps included data cleaning, handling missing values, and ensuring consistency across variables.
+
+The focus was on annual shark attack volumes, with statistical techniques applied to ensure stationarity and model accuracy. Forecasts were evaluated using metrics such as Mean Absolute Error (MAE) and Root Mean Squared Error (RMSE), demonstrating a reliable predictive model. This project highlights the importance of data quality, model validation, and the practical value of time series forecasting in public safety and environmental analytics.
+
 
 ## Data
 
@@ -16,7 +25,6 @@ The dataset is well-structured and easy to interpret. Exporting it to Excel allo
 After transformation, the data is loaded into Power BI for analysis using visual tools like line charts and heat maps to explore seasonality and trends. Tableau was considered for its advanced visuals but wasn’t used due to cost and lack of access.
 
 The data will be imported into Databricks, where Time Series analysis will be performed. Databricks is a versatile platform that supports data visualisation, modelling, and transformation—all in one place. It also allows the use of multiple programming languages, including Python, SQL, R, and Scala, making it accessible to a wide range of users. For my analysis, I will be writing code using Python due to the benefits such as wide available libraries, easy to use and visual support. 
-
 
 ## Data Engineering  
 
@@ -46,10 +54,62 @@ Load and Prepare Dataset
 
 *I have used machinelearningmastery.com as a guide to complete my Time Series Analysis. 
 
+Python Code to load and prepare data:
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#### Importing the Required libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from pyspark.sql.functions import lit, sum as _sum
+
+#### Loading the dataset from the SQL table
+Shark_Raw = spark.sql("SELECT * FROM `hive_metastore`.`default`.`shark_attack`")
+
+#### Adding a column with the value 1 to each row
+Shark_Raw = Shark_Raw.withColumn("Volume", lit(1))
+Shark_Raw = Shark_Raw.filter((Shark_Raw['Year']  >= 2000) & (Shark_Raw['Year'] <= 2023))
+
+#### Display the dataframe
+display(Shark_Raw)
+
+#### Group by 'Year' and sum the 'Volume' column
+yearly_volume = Shark_Raw.groupBy('Year').agg(_sum('Volume').alias('Total_Volume'))
+
+#### Display the new table
+display(yearly_volume)
+
+#### Convert the Spark DataFrame to a Pandas DataFrame
+yearly_volume_pd = yearly_volume.toPandas()
+
+#### Ensure the 'Year' column is in datetime format
+yearly_volume_pd['Year'] = pd.to_datetime(yearly_volume_pd['Year'], format='%Y')
+
+#### Sort the DataFrame by 'Year'
+yearly_volume_pd.sort_values(by='Year', inplace=True)
+
+#### Set 'Year' as the index
+yearly_volume_pd.set_index('Year', inplace=True)
+
+#### Plotting the time series data to visualize the trends or patterns
+plt.figure(figsize=(10, 6))
+plt.plot(yearly_volume_pd.index, yearly_volume_pd['Total_Volume'], label='Yearly Shark Attacks')
+plt.title('Shark Attacks Over Time')
+plt.xlabel('Year')
+plt.ylabel('Total Volume')
+plt.legend()
+
+#### Saving the plot as an image
+plt.savefig('timeseries_plot.png')
+plt.show()
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 The dataset was loaded into Databricks, with most of the initial transformations completed in Power Query. Additional validation steps were incorporated into the code to ensure data cleanliness, as inconsistencies could distort the accuracy of the time series model. A line chart was created using the target variable (Volume) against the independent variable (Year) to verify alignment with the visualisation presented in the dashboard.
 
 
 <img width="316" height="316" alt="image" src="https://github.com/Haley1203/Shark-Attacks-Time-Series/blob/main/Shark%20Attack%20Over%20Time%20Line%20Chart.png" />
+
+Splitting the dataset into train and test is not required on this dataset due to the low volume.
 
 Check for Stationarity
 
@@ -60,8 +120,34 @@ Since the p-value exceeds the 0.05 significance level, we fail to reject the nul
 
 To improve stationarity, the analysis was limited to data from post-1950 to post-2000, focusing on periods where the data-generating process is presumed to be more stable. First-order differencing was applied to remove trends by subtracting each observation from its predecessor, enhancing the model’s ability to detect underlying patterns. Additionally, a logarithmic transformation was used to stabilise variance and promote a more consistent distribution over time.
 
+Appying Log Transformation and First Order Code:
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#### Importing the Required libraries
+import numpy as np
+from statsmodels.tsa.stattools import adfuller
+
+#### Apply log transformation to stabilize variance
+yearly_volume_pd['Log_Total_Volume'] = np.log(yearly_volume_pd['Total_Volume'])
+
+#### Apply first-order differencing to the log-transformed data
+yearly_volume_pd['Log_Differenced'] = yearly_volume_pd['Log_Total_Volume'].diff().dropna()
+
+#### Display the DataFrame with the log-transformed and differenced data
+display(yearly_volume_pd)
+
+#### Perform the ADF test on the log-transformed and differenced data 
+result_log_diff = adfuller(yearly_volume_pd['Log_Differenced'].dropna())
+print(f"ADF Statistic (Log Differenced): {result_log_diff[0]}")
+print(f"p-value (Log Differenced): {result_log_diff[1]}")
+print("Critical Values:")
+for key, value in result_log_diff[4].items():
+print(f"   {key}: {value}")
+
+----------------------------------------------------------------------------------------------------------------------------------------
 Here is the new summary of the results:
 •	ADF Statistic: –6.55 — a strongly negative value, providing strong evidence against the null hypothesis.
+
 •	P-value: 0.0000911 — well below the 0.05 threshold, allowing us to reject the null hypothesis and conclude that the transformed time series is stationary.
 
 ## Results 
